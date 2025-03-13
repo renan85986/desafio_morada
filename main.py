@@ -12,8 +12,15 @@ def extracao_info(conversa):
     pergunta = f""" 
                 Extraia as seguintes informações da conversa:
                 - Nome do cliente
+                - Email
+                - Contato
                 - Orçamento
+                - Localização desejada
+                - Tipo de imóvel
+                - Preferencias adicionais
+                - Duvidas mencionadas
                 Conversa : {conversa}
+                Responda em formato JSON
                 """
     resposta = model.generate_content(pergunta)
     return resposta.text
@@ -23,6 +30,6 @@ conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
 
 for index, row in conversas.iterrows():
     conv = conversas.iloc[index,1]
-    time.sleep(10)
+    time.sleep(15)
     resp = extracao_info(conv)
     print (resp)
