@@ -59,7 +59,7 @@ def escrever_lead(dataframe):
 
     for _, row in dataframe.iterrows():
         cursor.execute("""
-            INSERT INTO lead (nome, email, telefone, orcamento, localizacao, tipo_imovel, preferencias, duvidas) 
+            INSERT OR IGNORE INTO lead (nome, email, telefone, orcamento, localizacao, tipo_imovel, preferencias, duvidas) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             row["Nome"], 
@@ -76,11 +76,35 @@ def escrever_lead(dataframe):
     conn.close()
     print("banco de dados carregado com  sucesso!")
 
+def escrever_empreendimentos(dataframe):
+    dataframe = dataframe.set_index("id") #transformei o indice na coluna id
 
-#conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
-#df_resp = processa_dados(conversas)
-#escrever_lead(df_resp)
+    try:
+        conn = sqlite3.connect('D:/Pessoal/desafio_morada/bd/desafio_local.db')
+        dataframe.to_sql("empreendimentos", con=conn, if_exists="append", index=False)
+        conn.close()
+        print("dados inseridos com sucesso!")
+    except sqlite3.IntegrityError:
+        print("Dados repetidos, foram ignorados")
 
-empreendimentos = pd.read_csv("D:/Pessoal/desafio_morada/dados/empreendimentos.csv")
-empreendimentos = empreendimentos.set_index("id") #transformei o indice na coluna id
-print(empreendimentos)
+    
+
+conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
+df_resp = processa_dados(conversas)
+escrever_lead(df_resp)
+
+df_empreendimentos = pd.read_csv("D:/Pessoal/desafio_morada/dados/empreendimentos.csv")
+print(df_empreendimentos)
+escrever_empreendimentos(df_empreendimentos)
+
+for index, row  in df_resp.iterrows():
+    time.sleep(10)
+    pergunta = f""" 
+                    Baseado nas informações do lead (possível cliente), sugira um empreendimento, baseado na tabela de empreendimentos,
+                    que seja adequado ao perfil e aos requisitos do cliente, retorne apenas uma string com o nome e o id do empreendimento e o lead correspondente
+                    Também justifique sua escolha
+                    Informações do lead : {row[:]}
+                    Informações dos empreendimentos : {df_empreendimentos}
+                    """
+    resposta = model.generate_content(pergunta)
+    print(resposta.text)

@@ -4,7 +4,7 @@ conn = sqlite3.connect("desafio_local.db")
 cursor = conn.cursor()
 
 cursor.executescript("""
-CREATE TABLE lead (
+CREATE TABLE IF NOT EXISTS lead (
    id INTEGER PRIMARY KEY AUTOINCREMENT,
    nome TEXT UNIQUE NOT NULL,
    email TEXT UNIQUE ,
@@ -16,19 +16,20 @@ CREATE TABLE lead (
    duvidas TEXT
 );
                      
-CREATE TABLE empreendimentos (
-   id INTEGER NOT NULL,
-   nome TEXT UNIQUE NOT NULL,
-   descricao TEXT UNIQUE ,
+CREATE TABLE IF NOT EXISTS empreendimentos (
+   id INTEGER,
+   nome TEXT PRIMARY KEY NOT NULL,
+   descricao TEXT ,
    localizacao TEXT,
    valor REAL,
    quartos INTEGER,
    banheiros INTEGER,
    area REAL,
    vagas INTEGER,
-   caracteristicas TEXT,
-   PRIMARY KEY (id, nome)
+   caracteristicas TEXT
 );
+                     
+
 
 """)
 
