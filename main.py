@@ -27,25 +27,33 @@ def extracao_info(conversa):
                 """
     resposta = model.generate_content(pergunta)
     resposta = re.sub(r"^```json|```$", "", resposta.text.strip()).strip()
-    
-    print(resposta)
+
+    #print(resposta)
     dados = json.loads(resposta) #conversão para dicionário
-    print(type(dados))
+    #print(type(dados))
 
     return dados
 
+def processa_dados(conversas):
+    dados_processados = [] # lista vazia
+
+    for index, row in conversas.iterrows():
+        conv = conversas.iloc[index,1]
+        time.sleep(5)
+
+        resp = extracao_info(conv)
+        #print(resp)
+        
+        if resp:
+            dados_processados.append(resp) # adiciona os dados processados à lista
+
+        df_resp = pd.DataFrame(dados_processados) # transforma a lista em df
+        print (df_resp.head())
+
+    return df_resp    
+    
 
 conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
-dados_processados = [] # lista vazia
+processa_dados(conversas)
 
-for index, row in conversas.iterrows():
-    conv = conversas.iloc[index,1]
-    time.sleep(5)
 
-    resp = extracao_info(conv)
-    print(resp)
-    if resp:
-        dados_processados.append(resp) # adiciona os dados processados à lista
-
-    df_resp = pd.DataFrame(dados_processados) # transforma a lista em df
-    print (df_resp.head())
