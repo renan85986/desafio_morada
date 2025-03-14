@@ -15,7 +15,23 @@ CREATE TABLE lead (
    preferencias TEXT,
    duvidas TEXT
 );
+                     
+CREATE TABLE empreendimentos (
+   id INTEGER NOT NULL,
+   nome TEXT UNIQUE NOT NULL,
+   descricao TEXT UNIQUE ,
+   localizacao TEXT,
+   valor REAL,
+   quartos INTEGER,
+   banheiros INTEGER,
+   area REAL,
+   vagas INTEGER,
+   caracteristicas TEXT,
+   PRIMARY KEY (id, nome)
+);
+
 """)
+
 
 conn.commit()
 conn.close()

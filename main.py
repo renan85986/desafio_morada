@@ -52,30 +52,35 @@ def processa_dados(conversas):
         print (df_resp)
 
     return df_resp    
-    
 
-conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
-df_resp = processa_dados(conversas)
+def escrever_lead(dataframe):
+    conn = sqlite3.connect('D:/Pessoal/desafio_morada/bd/desafio_local.db')
+    cursor = conn.cursor()
 
-conn = sqlite3.connect('D:/Pessoal/desafio_morada/bd/desafio_local.db')
-cursor = conn.cursor()
+    for _, row in dataframe.iterrows():
+        cursor.execute("""
+            INSERT INTO lead (nome, email, telefone, orcamento, localizacao, tipo_imovel, preferencias, duvidas) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            row["Nome"], 
+            row["Email"], 
+            row["Contato"], 
+            row["Orçamento"], 
+            row["Localização"], 
+            row["Tipo_imóvel"], 
+            row["Preferencias"], 
+            row["Duvidas_mencionadas"]        
+        ))
 
-for _, row in df_resp.iterrows():
-    cursor.execute("""
-        INSERT INTO lead (nome, email, telefone, orcamento, localizacao, tipo_imovel, preferencias, duvidas) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (
-        row["Nome"], 
-        row["Email"], 
-        row["Contato"], 
-        row["Orçamento"], 
-        row["Localização"], 
-        row["Tipo_imóvel"], 
-        row["Preferencias"], 
-        row["Duvidas_mencionadas"]        
-    ))
+    conn.commit()
+    conn.close()
+    print("banco de dados carregado com  sucesso!")
 
-# Salvar alterações e fechar conexão
-conn.commit()
-conn.close()
-print("banco de dados carregado com  sucesso!")
+
+#conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
+#df_resp = processa_dados(conversas)
+#escrever_lead(df_resp)
+
+empreendimentos = pd.read_csv("D:/Pessoal/desafio_morada/dados/empreendimentos.csv")
+empreendimentos = empreendimentos.set_index("id") #transformei o indice na coluna id
+print(empreendimentos)
