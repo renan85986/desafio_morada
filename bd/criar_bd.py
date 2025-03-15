@@ -6,7 +6,7 @@ cursor = conn.cursor()
 cursor.executescript("""
 CREATE TABLE IF NOT EXISTS lead (
    id INTEGER PRIMARY KEY AUTOINCREMENT,
-   nome TEXT UNIQUE NOT NULL,
+   nome_lead TEXT UNIQUE NOT NULL,
    email TEXT UNIQUE ,
    telefone TEXT,
    orcamento REAL,
@@ -28,8 +28,17 @@ CREATE TABLE IF NOT EXISTS empreendimentos (
    vagas INTEGER,
    caracteristicas TEXT
 );
-                     
 
+CREATE TABLE IF NOT EXISTS sugestoes (
+   nome_lead TEXT NOT NULL,
+   id INTEGER,
+   nome TEXT,
+   justificativa TEXT,
+   PRIMARY KEY (nome_lead),
+   FOREIGN KEY (nome_lead) REFERENCES lead(nome_lead),
+   FOREIGN KEY (id) REFERENCES empreendimentos(id),   
+   FOREIGN KEY (nome) REFERENCES empreendimentos(nome)   
+);                  
 
 """)
 

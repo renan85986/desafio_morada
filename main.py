@@ -49,7 +49,7 @@ def processa_dados(conversas):
             dados_processados.append(resp) # adiciona os dados processados à lista
 
         df_resp = pd.DataFrame(dados_processados) # transforma a lista em df
-        print (df_resp)
+        #print (df_resp)
 
     return df_resp    
 
@@ -59,7 +59,7 @@ def escrever_lead(dataframe):
 
     for _, row in dataframe.iterrows():
         cursor.execute("""
-            INSERT OR IGNORE INTO lead (nome, email, telefone, orcamento, localizacao, tipo_imovel, preferencias, duvidas) 
+            INSERT OR IGNORE INTO lead (nome_lead, email, telefone, orcamento, localizacao, tipo_imovel, preferencias, duvidas) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             row["Nome"], 
@@ -87,24 +87,60 @@ def escrever_empreendimentos(dataframe):
     except sqlite3.IntegrityError:
         print("Dados repetidos, foram ignorados")
 
-    
+
+def extracao_sugestao(lead, empreendimentos):
+    dados_processados = []
+
+    for index, row  in lead.iterrows():
+        time.sleep(10)
+        pergunta = f""" 
+                        Baseado nas informações do lead (possível cliente), sugira um empreendimento, baseado na tabela de empreendimentos,
+                        que seja adequado ao perfil e aos requisitos do cliente, retorne por meio de strings unicas:
+                        -nome do empreendimento sugerido (nome)
+                        -id do empreendimento (id)
+                        - lead correspondente (nome_lead)
+                        - justificativa 
+                        Informações do lead : {row[:]}
+                        Informações dos empreendimentos : {empreendimentos}
+                        Responda estritamente em formato JSON válido
+                        """
+        resposta = model.generate_content(pergunta)
+        resposta = re.sub(r"^```json|```$", "", resposta.text.strip()).strip()
+
+        dados = json.loads(resposta)
+        #print(dados)
+
+        dados_processados.append(dados)
+        df_sugestao = pd.DataFrame(dados_processados)
+        print(df_sugestao)
+
+    return df_sugestao
+   
+def escrever_sugestao(dataframe):
+    conn = sqlite3.connect('D:/Pessoal/desafio_morada/bd/desafio_local.db')
+    cursor = conn.cursor()
+
+    for _, row in dataframe.iterrows():
+        cursor.execute("""
+            INSERT OR IGNORE INTO sugestoes (nome_lead, id, nome, justificativa) 
+            VALUES (?, ?, ?, ?)
+        """, (
+            row["nome"], 
+            row["id"], 
+            row["nome_lead"], 
+            row["justificativa"]    
+        ))
+
+    conn.commit()
+    conn.close()
+    print("banco de dados carregado com  sucesso!") 
 
 conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
 df_resp = processa_dados(conversas)
 escrever_lead(df_resp)
 
 df_empreendimentos = pd.read_csv("D:/Pessoal/desafio_morada/dados/empreendimentos.csv")
-print(df_empreendimentos)
+#print(df_empreendimentos)
 escrever_empreendimentos(df_empreendimentos)
-
-for index, row  in df_resp.iterrows():
-    time.sleep(10)
-    pergunta = f""" 
-                    Baseado nas informações do lead (possível cliente), sugira um empreendimento, baseado na tabela de empreendimentos,
-                    que seja adequado ao perfil e aos requisitos do cliente, retorne apenas uma string com o nome e o id do empreendimento e o lead correspondente
-                    Também justifique sua escolha
-                    Informações do lead : {row[:]}
-                    Informações dos empreendimentos : {df_empreendimentos}
-                    """
-    resposta = model.generate_content(pergunta)
-    print(resposta.text)
+df_sugestao = extracao_sugestao(df_resp, df_empreendimentos)
+escrever_sugestao(df_sugestao)
