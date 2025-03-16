@@ -125,9 +125,9 @@ def escrever_sugestao(dataframe):
             INSERT OR IGNORE INTO sugestoes (nome_lead, id, nome, justificativa) 
             VALUES (?, ?, ?, ?)
         """, (
-            row["nome"], 
-            row["id"], 
             row["nome_lead"], 
+            row["id"], 
+            row["nome"], 
             row["justificativa"]    
         ))
 
