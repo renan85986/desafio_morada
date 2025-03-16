@@ -29,12 +29,16 @@ if not sugestao.empty:
     empreendimento_info = df_empreendimentos.loc[df_empreendimentos["nome"] == sugestao.iloc[0]["nome"],["nome","localizacao","valor","quartos","banheiros","area","vagas","caracteristicas"]]
     st.write("### Detalhes do Empreendimento", empreendimento_info)
 
-lead_orcamento = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, ["orcamento"]]
-print(lead_orcamento)
+nome_leads = df_leads["nome_lead"].to_list()
+#print(nome_leads)
 
-nome_sugestao_atual = df_sugestoes.loc[df_sugestoes["nome_lead"] == lead_selecionado, "nome"].values[0]
-sugerido_orcamento = df_empreendimentos.loc[df_empreendimentos["nome"] == nome_sugestao_atual, "valor"].values[0]
-print(sugerido_orcamento)
+orcamento_leads = df_leads["orcamento"].to_list()
+#print(orcamento_leads)
+
+empreendimentos_sugeridos = (df_sugestoes.loc[df_sugestoes["nome_lead"] == nome_leads, "nome"]).to_list()
+orcamento_sugeridos = df_empreendimentos.loc[df_empreendimentos["nome"].isin(empreendimentos_sugeridos), "valor"].to_list() #isin verifica se os elementos da serie empreendimentos_sugeridos estão na coluna "nome"
+#print(empreendimentos_sugeridos)
+#print(orcamento_sugeridos)
 
 st.markdown("---")
 #estado_selecionado = st.selectbox(" Selecione um estado: ", df_leads["nome_lead"])

@@ -83,6 +83,7 @@ def escrever_empreendimentos(dataframe):
     dataframe = dataframe.set_index("id") #transformei o indice na coluna id
 
     dataframe["estado"] = dataframe["localizacao"].str[-2:] #extraindo ultimos 2 caracteres da coluna localização e criando coluna estado
+    print(dataframe)
    
     try:
         conn = sqlite3.connect('D:/Pessoal/desafio_morada/bd/desafio_local.db')
@@ -95,25 +96,43 @@ def escrever_empreendimentos(dataframe):
 
 def extracao_sugestao(lead, empreendimentos):
     dados_processados = []
+    empreendimentos_lista = empreendimentos.to_dict(orient="records") #transformando dataframe em lista, já que não consigo iterar sobre ele
+    empreendimentos_json = json.dumps(empreendimentos_lista, indent=4, ensure_ascii=False)
 
     for index, row  in lead.iterrows():
         time.sleep(10)
         pergunta = f""" 
-                        Baseado nas informações do lead (possível cliente), sugira um empreendimento, baseado na tabela de empreendimentos,
-                        que seja adequado ao perfil e aos requisitos do cliente (como orcamento em comparação ao valor do empreendimento e preferencias), retorne por meio de strings unicas:
+                        Baseado nas informações do lead (possível cliente), sugira o melhor empreendimento, considerando os critérios, nessa ordem:
+                        1. O orçamento do lead deve ser compatível com o preço do empreendimento.
+                        2. O tipo de imóvel desejado deve corresponder ao empreendimento.
+                        3. O empreendimento deve estar localizado no mesmo estado do lead.
+                        4. Se houver preferências específicas (como lazer, segurança, metragem), priorizar empreendimentos que atendam a esses critérios.
+                        5. Se houver mais de um empreendimento adequado, escolha aquele com a menor diferença entre orçamento e preço do imóvel, mas apontar ambos na justificativa
+                        6. Se não houver correspondência exata, sugerir o mais próximo, explicando a escolha
+                        7. Considere também se é para compra ou aluguel
+
+                        Retorne, estritamente em formato JSON:                       
                         -nome do empreendimento sugerido (nome)
                         -id do empreendimento (id)
                         - lead correspondente (nome_lead)
                         - justificativa 
-                        Informações do lead : {row[:]}
-                        Informações dos empreendimentos : {empreendimentos}
-                        Responda estritamente em formato JSON válido
+
+                        Informações do lead : 
+                        - Nome: {row["Nome"]}
+                        - Orçamento do lead: {row["Orçamento"]}
+                        - Localização: {row["Localização"]}
+                        - Estado: {row["Estado"]}
+                        - Tipo do imóvel: {row["Tipo_imóvel"]}
+                        - Preferencias: {row["Preferencias"]}
+                        
+                        Informações dos empreendimentos : 
+                        {empreendimentos_json}         
                         """
         resposta = model.generate_content(pergunta)
         resposta = re.sub(r"^```json|```$", "", resposta.text.strip()).strip()
 
         dados = json.loads(resposta)
-        #print(dados)
+        print(dados)
 
         dados_processados.append(dados)
         df_sugestao = pd.DataFrame(dados_processados)
