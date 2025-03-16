@@ -17,9 +17,7 @@ st.title("Relatório de Leads e Sugestões de Empreendimentos")
 lead_selecionado = st.selectbox(" Selecione um Lead:", df_leads["nome_lead"])
 
 df_leads = df_leads.set_index("id")
-
-
-lead_info = df_leads[df_leads["nome_lead"] == lead_selecionado]
+lead_info = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, ["nome_lead", "email", "telefone", "orcamento", "localizacao", "tipo_imovel", "preferencias"]]
 st.write("### Informações do Lead", lead_info)
 
 df_sugestoes = df_sugestoes.set_index("id")
@@ -27,6 +25,6 @@ sugestao = df_sugestoes[df_sugestoes["nome_lead"] == lead_selecionado]
 st.write("### Empreendimento Sugerido", sugestao)
 
 if not sugestao.empty:
-    empreendimento_info = df_empreendimentos[df_empreendimentos["nome"] == sugestao.iloc[0]["nome"]]
+    empreendimento_info = df_empreendimentos.loc[df_empreendimentos["nome"] == sugestao.iloc[0]["nome"],["nome","localizacao","valor","quartos","banheiros","area","vagas","caracteristicas"]]
     st.write("### Detalhes do Empreendimento", empreendimento_info)
 
