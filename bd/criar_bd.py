@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS lead (
    telefone TEXT,
    orcamento REAL,
    localizacao TEXT,
+   estado TEXT,
    tipo_imovel TEXT,
    preferencias TEXT,
    duvidas TEXT

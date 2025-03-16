@@ -19,12 +19,14 @@ def extracao_info(conversa):
                 - Contato (string)
                 - Orçamento (inteiro)
                 - Localização (string)
+                - Estado (string)
                 - Tipo_imóvel (string)
                 - Preferencias (string)
                 - Duvidas_mencionadas (string)
                 Conversa : {conversa}
                 Responda estritamente em formato JSON válido e lembre de retornar o orçamento em formato compatível com banco de dados
                 Retorne localização, preferencias e duvidas mencionadas como strings unicas, separando multiplicidades por virgula
+                Para o campo estado, inferir a partir do campo localização, e retornar apenas a sigla do estado
                 """
     resposta = model.generate_content(pergunta)
     resposta = re.sub(r"^```json|```$", "", resposta.text.strip()).strip()
@@ -59,14 +61,15 @@ def escrever_lead(dataframe):
 
     for _, row in dataframe.iterrows():
         cursor.execute("""
-            INSERT OR IGNORE INTO lead (nome_lead, email, telefone, orcamento, localizacao, tipo_imovel, preferencias, duvidas) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT OR IGNORE INTO lead (nome_lead, email, telefone, orcamento, localizacao, estado, tipo_imovel, preferencias, duvidas) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, (
             row["Nome"], 
             row["Email"], 
             row["Contato"], 
             row["Orçamento"], 
-            row["Localização"], 
+            row["Localização"],
+            row["Estado"], 
             row["Tipo_imóvel"], 
             row["Preferencias"], 
             row["Duvidas_mencionadas"]        
