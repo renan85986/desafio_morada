@@ -82,6 +82,8 @@ def escrever_lead(dataframe):
 def escrever_empreendimentos(dataframe):
     dataframe = dataframe.set_index("id") #transformei o indice na coluna id
 
+    dataframe["estado"] = dataframe["localizacao"].str[-2:] #extraindo ultimos 2 caracteres da coluna localização e criando coluna estado
+   
     try:
         conn = sqlite3.connect('D:/Pessoal/desafio_morada/bd/desafio_local.db')
         dataframe.to_sql("empreendimentos", con=conn, if_exists="append", index=False)
@@ -98,7 +100,7 @@ def extracao_sugestao(lead, empreendimentos):
         time.sleep(10)
         pergunta = f""" 
                         Baseado nas informações do lead (possível cliente), sugira um empreendimento, baseado na tabela de empreendimentos,
-                        que seja adequado ao perfil e aos requisitos do cliente, retorne por meio de strings unicas:
+                        que seja adequado ao perfil e aos requisitos do cliente (como orcamento em comparação ao valor do empreendimento e preferencias), retorne por meio de strings unicas:
                         -nome do empreendimento sugerido (nome)
                         -id do empreendimento (id)
                         - lead correspondente (nome_lead)
@@ -125,7 +127,7 @@ def escrever_sugestao(dataframe):
 
     for _, row in dataframe.iterrows():
         cursor.execute("""
-            INSERT OR IGNORE INTO sugestoes (nome_lead, id, nome, justificativa) 
+            INSERT OR REPLACE INTO sugestoes (nome_lead, id, nome, justificativa) 
             VALUES (?, ?, ?, ?)
         """, (
             row["nome_lead"], 
@@ -139,11 +141,13 @@ def escrever_sugestao(dataframe):
     print("banco de dados carregado com  sucesso!") 
 
 conversas = pd.read_csv("D:/Pessoal/desafio_morada/dados/conversas_leads.csv")
+print("Extraindo dados de conversa e realizando consultas...")
 df_resp = processa_dados(conversas)
 escrever_lead(df_resp)
 
 df_empreendimentos = pd.read_csv("D:/Pessoal/desafio_morada/dados/empreendimentos.csv")
 #print(df_empreendimentos)
+print("Extraindo dados de empreendimentos e realizando consultas....")
 escrever_empreendimentos(df_empreendimentos)
 df_sugestao = extracao_sugestao(df_resp, df_empreendimentos)
 escrever_sugestao(df_sugestao)

@@ -27,7 +27,8 @@ CREATE TABLE IF NOT EXISTS empreendimentos (
    banheiros INTEGER,
    area REAL,
    vagas INTEGER,
-   caracteristicas TEXT
+   caracteristicas TEXT,
+   estado TEXT
 );
 
 CREATE TABLE IF NOT EXISTS sugestoes (
