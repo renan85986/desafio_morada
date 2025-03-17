@@ -9,7 +9,7 @@ import sqlite3
 largura = 0.30
 
 def carregar_dados():
-    conn = sqlite3.connect('D:/Pessoal/desafio_morada/bd/desafio_local.db')  
+    conn = sqlite3.connect('./bd/desafio_local.db')  
     df_leads = pd.read_sql("SELECT * FROM lead", conn)
     df_sugestoes = pd.read_sql("SELECT * FROM sugestoes", conn)
     df_empreendimentos = pd.read_sql("SELECT * FROM empreendimentos", conn)
@@ -76,9 +76,46 @@ if not sugestao.empty:
     })
     st.write("### Detalhes do Empreendimento", empreendimento_info_renomeado)
 
-sentimento_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "sentimento"]
+
+
+sentimento_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "sentimento"].values[0]
 print(sentimento_lead)
-intencao_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "intencao"]
+intencao_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "intencao"].values[0]
+
+sentimento_valor = map_sentimento(sentimento_lead)
+intencao_valor = map_intencao(intencao_lead)
+
+fig_sentimento = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=sentimento_valor,
+    title={'text': "Sentimento do Lead"},
+    gauge={'axis': {'range': [None, 100]},
+           'steps': [{'range': [0, 25], 'color': "red"},
+                     {'range': [25, 50], 'color': "orange"},
+                     {'range': [50, 75], 'color': "yellow"},
+                     {'range': [75, 100], 'color': "green"}]}
+))
+fig_intencao = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=intencao_valor,
+    title={'text': "Intenção de Compra do Lead"},
+    gauge={'axis': {'range': [None, 100]},
+           'steps': [{'range': [0, 25], 'color': "red"},
+                     {'range': [25, 50], 'color': "orange"},
+                     {'range': [50, 75], 'color': "yellow"},
+                     {'range': [75, 100], 'color': "green"}]}
+))
+st.write("### Analise de Sentimento e Intenção de Compra")
+col1, col2 = st.columns(2)
+
+with col1:
+    st.plotly_chart(fig_sentimento)
+
+with col2:
+    st.plotly_chart(fig_intencao)
+
+st.write("###### Sentimento indica como lead se sente em relação ao serviço ou atendimento")
+st.write("###### Intenção de compra avalia o quão pronto o lead está para realizar a compra")
 
 #Gráfico interativo
 st.write("### Orçamento do lead x Valor do empreendimento sugerido")
