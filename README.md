@@ -2,7 +2,9 @@
 
 # Introdução
 Em um contexto de mercado imobiliário, saber oferecer os melhores empreendimentos é fundamental para o corretor de imóveis. Pensando nisso, essa solução analisa conversas entre um lead (potencial cliente) e um assistente virtual, extrai os dados pertinentes dos 
-leads, e gera um relatório contendo os dados dos clientes e baseado nesses dados, sugestões individuais de empreendimentos baseados nas informações fornecidas. O relatório também conta com várias análises gráficas quanto ao perfil geral dos leads, tipos de imóveis e geolocalização, além de fazer uma análise do sentimento e intenção de compra do lead, fornecendo uma ferramenta completa para o corretor orientar seu atendimento ao cliente.
+leads, e gera um relatório contendo os dados dos clientes e baseado nesses dados, sugestões individuais de empreendimentos baseados nas informações fornecidas. 
+
+O relatório também conta com várias análises gráficas quanto ao perfil geral dos leads, tipos de imóveis e geolocalização, além de fazer uma análise do sentimento e intenção de compra do lead, fornecendo uma ferramenta completa para o corretor orientar seu atendimento ao cliente.
 
 ** Observação: Para as instruções de como configurar a chave API do Gemini e executar o projeto, refira ao último item desse documento ("Configuração do ambiente")
 # 1 - Tecnologias utilizadas
