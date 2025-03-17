@@ -32,7 +32,7 @@ leads, e gera um relatório contendo os dados dos clientes e baseado nesses dado
    Novamente, os dados são persistidos no banco de dados na tabela sugestoes. [escrever_sugestoes()] 
 
    ### 3. Geração do relatório:
-   Após extraídos os dados e persistidos no banco de dados, o código relatorio.py extrai os dados de cada tabela e gera insights e visualizações de acordo, são elas:
+   Após extraídos os dados e persistidos no banco de dados, o código relatorio.py extrai os dados de cada tabela e gera insights e visualizações de acordo através do streamlit, são elas:
        - Informações do lead selecionado
        - Justificativa do empreendimento sugerido
        - Informações do empreendimento sugerido
@@ -44,13 +44,43 @@ leads, e gera um relatório contendo os dados dos clientes e baseado nesses dado
        - Empreendimentos x Estado e Leads x Estado
        - Tipos de imóveis mais procurados
        
+   <p align="center">
+       <img src="https://github.com/user-attachments/assets/420fd7cc-fe4c-4e9d-a83a-8952c0f73e8c" width="45%">
+       <img src="https://github.com/user-attachments/assets/11f3cc9f-dede-40f0-a9f6-d4664c23e434" width="45%">
+   </p>
+   <p align="center">
+       <img src="https://github.com/user-attachments/assets/d091a0c4-ef85-4431-89a6-360533183367" width="45%">
+       <img src="https://github.com/user-attachments/assets/6c0168be-c249-40df-8e51-000c84c91941" width="45%">
+   </p>
+       
 # 3 - Banco de dados 
    O banco de dados utilizado é o SQLite, e foi escolhido devido a facilidade de compartilhar sua estrutura, visto que é baseado em arquivos.
    
    Por isso, o banco de dados já está corretamente configurado e com dados na pasta bd (desafio_local.db). Caso julgue necessário, é possível gerar novamente o banco ao rodar o script criar_bd.py, ele gerará o banco novamente e sem os dados, ao fazer isso mover o       
    arquivo do banco para a pasta bd para o correto funcionamento do código.
+
+# 4 - Principais Desafios
+   Apesar de ser um projeto de nível iniciante, foram enfrentados desafios interessantes devido ao uso de novas tecnologias e ao processamento de dados em linguagem natural. Apesar da manipulação de tabelas e dataframes ser semelhante a outros projetos, o processamento 
+   de dados em linguagem natural se provou um desafio interessante em relação à extração de informações relevantes dos textos, à normalização dos dados e à criação de regras para a recomendação do empreendimento ideal. A principal dificuldade foi interpretar 
+   corretamente as preferências dos leads, que muitas vezes estavam descritas de maneira subjetiva ou ambígua. 
+
+   Uma limitação da solução é quanto ao tempo de execução, como é usada uma versão gratuita da api do google gemini, o número de requisições à ela é limitado, por isso foram introduzidas algumas paradas temporárias entre uma requisição e outra, para não sobrecarregar e gerar erro
+
+   Além disso, outro desafio foi estruturar a lógica de recomendação para que ela seguisse os critérios estabelecidos de forma eficiente, garantindo que o empreendimento sugerido fosse o mais adequado possível. Foi necessário definir uma ordem de prioridade clara e 
+   implementar filtros progressivos para encontrar a melhor correspondência.
+
+   Por fim, a criação do gráfico comparativo trouxe aprendizados na visualização de dados, especialmente na escolha adequada das cores, da disposição das barras e na apresentação clara da relação entre orçamento e preço do empreendimento.
+
+   Apesar dos desafios, o projeto foi uma excelente oportunidade de aprendizado, consolidando conhecimentos em manipulação de dados, processamento de linguagem natural e visualização de informações.
+
+# 5 - Conclusão
+   A lógica fornece uma ferramenta valiosa para otimizar o processo de recomendação e tratamento de clientes no setor imobiliário.
+   Como possíveis melhorias, o sistema pode ser aprimorado com modelos de aprendizado de máquina para tornar a recomendação mais dinâmica, além de incorporar pesos ajustáveis a cada critério, baseado nas informações extraidas do lead
+
+   O projeto final foi considerado satisfatório frente aos requisitos do desafio técnico e considerando o tempo para sua implementação. Foram exercitados conceitos de processamento de linguagem natural, análise e visualização de dados, suportado por modelos de 
+   linguagem, no caso o Gemini.
    
-# 1 - Configuração do ambiente 
+# 6 - Configuração do ambiente 
 
 Antes de rodar o código, é necessário configurar a chave da API do Google no seu ambiente. Siga os passos abaixo para garantir que o código tenha acesso a ela:
 
