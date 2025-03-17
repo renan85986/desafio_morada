@@ -1,8 +1,10 @@
-# Gerador de relatório de leads e empreendimentos
+# Gerador de relatório de leads e sugestões de empreendimentos
 
 # Introdução
 Em um contexto de mercado imobiliário, saber oferecer os melhores empreendimentos é fundamental para o corretor de imóveis. Pensando nisso, essa solução analisa conversas entre um lead (potencial cliente) e um assistente virtual, extrai os dados pertinentes dos 
-leads, e gera um relatório contendo os dados dos clientes e baseado nesses dados, sugestões individuais de empreendimentos baseados nas informações fornecidas. O relatório também conta com várias análises gráficas quanto ao perfil geral dos leads, tipos de imóveis e geolocalização, além de fazer uma análise do sentimento e intenção de compra do lead, fornecendo uma ferramenta completa para o corretor orientar seu atendimento ao cliente.
+leads, e gera um relatório contendo os dados dos clientes e baseado nesses dados, sugestões individuais de empreendimentos baseados nas informações fornecidas. 
+
+O relatório também conta com várias análises gráficas quanto ao perfil geral dos leads, tipos de imóveis e geolocalização, além de fazer uma análise do sentimento e intenção de compra do lead, fornecendo uma ferramenta completa para o corretor orientar seu atendimento ao cliente.
 
 ** Observação: Para as instruções de como configurar a chave API do Gemini e executar o projeto, refira ao último item desse documento ("Configuração do ambiente")
 # 1 - Tecnologias utilizadas
@@ -60,7 +62,9 @@ leads, e gera um relatório contendo os dados dos clientes e baseado nesses dado
    arquivo do banco para a pasta bd para o correto funcionamento do código.
 
 # 4 - Principais Desafios
-   Apesar de ser um projeto de nível iniciante, foram enfrentados desafios interessantes devido ao uso de novas tecnologias e ao processamento de dados em linguagem natural. Apesar da manipulação de tabelas e dataframes ser semelhante a outros projetos, o processamento 
+   Apesar de ser um projeto de nível iniciante, foram enfrentados desafios interessantes devido ao uso de novas tecnologias e ao processamento de dados em linguagem natural. O projeto seguiu a opção 1 "Extrator de Informações de Conversas", porém contém algumas funcionalidades adicionais.
+   
+   Apesar da manipulação de tabelas e dataframes ser semelhante a outros projetos, o processamento 
    de dados em linguagem natural se provou um desafio interessante em relação à extração de informações relevantes dos textos, à normalização dos dados e à criação de regras para a recomendação do empreendimento ideal. A principal dificuldade foi interpretar 
    corretamente as preferências dos leads, que muitas vezes estavam descritas de maneira subjetiva ou ambígua. 
 
@@ -75,7 +79,9 @@ leads, e gera um relatório contendo os dados dos clientes e baseado nesses dado
 
 # 5 - Conclusão
    A lógica fornece uma ferramenta valiosa para otimizar o processo de recomendação e tratamento de clientes no setor imobiliário.
-   Como possíveis melhorias, o sistema pode ser aprimorado com modelos de aprendizado de máquina para tornar a recomendação mais dinâmica, além de incorporar pesos ajustáveis a cada critério, baseado nas informações extraidas do lead
+   Como possíveis melhorias, o sistema pode ser aprimorado com modelos de aprendizado de máquina para tornar a recomendação mais dinâmica, além de incorporar pesos ajustáveis a cada critério, baseado nas informações extraidas do lead. 
+   
+   A análise de sentimento e intenção de compra é bem simples ainda e pode ser muito aprimorada, levando em vista também que as conversas utilizadas na análise não demonstravam muitos sinais emocionais ou subjetivos, o que é compreensivel se tratando de uma conversa simulada, porém com uma conversa real, com certeza essa funcionalidade vai ser mais explorada e gerará um insight poderoso para o corretor que o usar.
 
    O projeto final foi considerado satisfatório frente aos requisitos do desafio técnico e considerando o tempo para sua implementação. Foram exercitados conceitos de processamento de linguagem natural, análise e visualização de dados, suportado por modelos de 
    linguagem, no caso o Gemini.
