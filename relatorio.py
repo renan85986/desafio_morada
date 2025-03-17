@@ -76,11 +76,20 @@ if not sugestao.empty:
     })
     st.write("### Detalhes do Empreendimento", empreendimento_info_renomeado)
 
+sentimento_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "sentimento"]
+print(sentimento_lead)
+intencao_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "intencao"]
+
 #Gráfico interativo
 st.write("### Orçamento do lead x Valor do empreendimento sugerido")
 lead_orcamento = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "orcamento"].values[0]
 nome_sugestao_atual = df_sugestoes.loc[df_sugestoes["nome_lead"] == lead_selecionado, "nome"].values[0]
-sugerido_orcamento = df_empreendimentos.loc[df_empreendimentos["nome"] == nome_sugestao_atual, "valor"].values[0]
+resultados = df_empreendimentos.loc[df_empreendimentos["nome"] == nome_sugestao_atual, "valor"].values
+
+if len(resultados) > 0:
+    sugerido_orcamento = resultados[0]  
+else:
+    sugerido_orcamento = 0
 
 x = ['Orçamento do lead', 'Valor do imóvel']
 valores = [lead_orcamento, sugerido_orcamento]
@@ -89,7 +98,6 @@ fig2, ax2 = plt.subplots(figsize=(10,5))
 
 ax2.bar(x,valores, color=['royalblue','red'], width=largura)
 st.pyplot(fig2)
-
 
 st.markdown("---")
 
