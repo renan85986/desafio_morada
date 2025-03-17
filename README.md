@@ -36,8 +36,10 @@ Antes de rodar o código, é necessário configurar a chave da API do Google no 
      export GOOGLE_APPLICATION_CREDENTIALS="/caminho/para/arquivo/credenciais.json"
      ```
 
-  - Defina a variável de ambiente `GCP_PROJECT_ID` com o nome do arquivo de projeto do google cloud
-  set GCP_PROJECT_ID=exemploexemplo-1203123-exemplo
+  - Defina a variável de ambiente `GCP_PROJECT_ID` com o nome do arquivo de projeto do google cloud (normalmente aparece em visão geral do google cloud)
+     ```cmd
+     set GCP_PROJECT_ID=exemploexemplo-1203123-exemplo
+     ```
 
   Se definir as variáveis no terminal, elas só valerão para a sessão atual do terminal (!!!)
   
@@ -68,7 +70,7 @@ Antes de rodar o código, é necessário configurar a chave da API do Google no 
      pip install google-cloud-secret-manager
      pip install streamlit
      pip install matplotlib
-     pip pinstall plotly
+     pip install plotly
      pip install numpy
      ```
      
