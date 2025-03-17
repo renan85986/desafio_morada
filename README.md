@@ -20,9 +20,36 @@ leads, e gera um relatório contendo os dados dos clientes e baseado nesses dado
    empreendimentos.csv, contendo id, nome, descricao, localizacao, valor, quartos, banheiros, area, vagas, caracteristicas
 
    ### 2. Processamento de dados:
-   Após ler os arquivos, as conversas são estruturadas em um dataframe e é requisitado ao Gemini para extrair informações de cada lead de cada conversa (nome, email, telefone, orçamento, localização, estado, tipo de imóvel, preferencias, dúvidas, sentimento em relação     ao serviço, e intenção de compra)
+   Após ler os arquivos, as conversas são estruturadas em um dataframe e é requisitado ao Gemini para extrair informações de cada lead de cada conversa (nome, email, telefone, orçamento, localização, estado, tipo de imóvel, preferencias, dúvidas, sentimento em relação     ao serviço, e intenção de compra). [funções processa_dados() e extracao_info()] 
+   
+   Depois, as informações extraídas da conversa são inseridas no banco de dados, na tabela lead. [escrever_lead()]
+   
+   De forma semelhante, o dataframe salvo com os dados dos empreendimentos é salvo inteiro no banco de dados na tabela empreendimentos. [escrever_empreendimentos()] 
 
+   Com os dados organizados, é feita uma outra requisição pro gemini, a partir dos dados do lead e dos empreendimentos, é requisitado ao gemini a melhor sugestão de empreendimento para cada lead, considerando as informações fornecidas pelo mesmo
+   O gemini retorna o nome do empreendimento, assim como seu id, o lead correspondente e a justificativa para a escolha. [extracao_sugestao()]
+   
+   Novamente, os dados são persistidos no banco de dados na tabela sugestoes. [escrever_sugestoes()] 
 
+   ### 3. Geração do relatório:
+   Após extraídos os dados e persistidos no banco de dados, o código relatorio.py extrai os dados de cada tabela e gera insights e visualizações de acordo, são elas:
+       - Informações do lead selecionado
+       - Justificativa do empreendimento sugerido
+       - Informações do empreendimento sugerido
+       - Indicador de sentimento e intenção de compra
+       - Comparativo entre orçamento do lead e valor do empreendimento sugerido
+       
+   Em seguida, são mostrados insights mais gerais de todos os leads:
+       - Comparativo entre orçamento do lead e valor do empreendimento sugerido de todos 
+       - Empreendimentos x Estado e Leads x Estado
+       - Tipos de imóveis mais procurados
+       
+# 3 - Banco de dados 
+   O banco de dados utilizado é o SQLite, e foi escolhido devido a facilidade de compartilhar sua estrutura, visto que é baseado em arquivos.
+   
+   Por isso, o banco de dados já está corretamente configurado e com dados na pasta bd (desafio_local.db). Caso julgue necessário, é possível gerar novamente o banco ao rodar o script criar_bd.py, ele gerará o banco novamente e sem os dados, ao fazer isso mover o       
+   arquivo do banco para a pasta bd para o correto funcionamento do código.
+   
 # 1 - Configuração do ambiente 
 
 Antes de rodar o código, é necessário configurar a chave da API do Google no seu ambiente. Siga os passos abaixo para garantir que o código tenha acesso a ela:
