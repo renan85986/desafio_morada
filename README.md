@@ -1,1 +1,77 @@
-# desafio_morada
+# Desafio Morada.ai
+
+## Requisitos
+
+Antes de rodar o código, é necessário configurar a chave da API do Google no seu ambiente. Siga os passos abaixo para garantir que o código tenha acesso a ela:
+
+### 1. Criar um projeto no Google Cloud
+   - Acesse o [Google Cloud Console](https://console.cloud.google.com/).
+   - Crie um novo projeto ou selecione um existente.
+
+### 2. AtivarSecret Manager
+   - No Google Cloud Console, acesse **APIs & Services** > **Library**.
+   - Pesquise e ativar a API **Secret Manager**.
+
+### 3. Armazenar a chave da API no Secret Manager
+   - Na barra de pesquisa do google cloud console, acesse **Secret Manager**.
+   - Clique em **Create Secret** e insira a chave da API (do Google) como o valor do segredo.
+   - Nomeie o segredo como `GOOGLE_API_KEY`.
+
+### 4. Criar uma Conta de Serviço e gerar as credenciais
+   - Procurar **IAM & Admin** > **Service Accounts**.
+   - Clique em **Create Service Account** e forneça um nome.
+   - Em permissões, adicione a função **Secret Manager Secret Accessor**(importante!!!)
+   - Na aba **Keys**, gere uma chave no formato JSON
+   - Baixe o arquivo JSON das credenciais
+
+### 5. Configuração das variáveis de ambiente
+   - Defina a variável de ambiente `GOOGLE_APPLICATION_CREDENTIALS` com o caminho do arquivo JSON das credenciais baixadas:
+
+     **No Windows (CMD):**
+     ```cmd
+     set GOOGLE_APPLICATION_CREDENTIALS="C:\caminho_para_credenciais\credencial.json"
+     ```
+     **No Linux/macOS:**
+     ```bash
+     export GOOGLE_APPLICATION_CREDENTIALS="/caminho/para/arquivo/credenciais.json"
+     ```
+
+  - Defina a variável de ambiente `GCP_PROJECT_ID` com o nome do arquivo de projeto do google cloud
+  set GCP_PROJECT_ID=exemploexemplo-1203123-exemplo
+
+  Se definir as variáveis no terminal, elas só valerão para a sessão atual do terminal (!!!)
+  
+  Por experiência própria, não dá para setar a variável no terminal do vscode, também não testei no powershell
+  apenas no cmd. 
+  
+  Para checar as variáveis:
+     ```cmd
+     echo %variavel%
+     ```
+### 6. Instalar o Google Cloud SDK 
+   - Baixar e instalar: [Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+   - Depois, seguir:
+     ```bash
+     gcloud auth application-default login
+     ```
+     Isso permitirá autenticar e validar suas credenciais.
+
+### 7. Instalar as dependências do projeto
+   - Para rodar o código, instale as bibliotecas necessárias com o comando:
+     ```bash
+     pip install -r requirements.txt
+     ```
+
+### 8. Rodando o código
+   Agora você pode rodar o código. Ele irá acessar automaticamente a chave da API do Google armazenada no Secret Manager.
+   ```bash
+   python main.py
+   ```
+
+## Solução de Problemas
+- **Erro de credenciais**: Se o código falhar ao acessar a chave, verifique se a variável de ambiente `GOOGLE_APPLICATION_CREDENTIALS` está configurada corretamente.
+- **Permissões insuficientes**: Certifique-se de que a conta de serviço tem acesso ao segredo no Secret Manager.
+- **Comando `gcloud` não encontrado**: Precisa instalar o google cloud SDK.
+
+Seguindo esses passos, sua chave de API estará corretamente configurada e acessível para uso no código.
+

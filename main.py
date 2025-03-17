@@ -6,6 +6,7 @@ import json
 import re
 import os
 import sqlite3
+import subprocess
 
 def acessar_segredo(secret_name):
     client = secretmanager.SecretManagerServiceClient()
@@ -100,7 +101,7 @@ def escrever_empreendimentos(dataframe):
     dataframe = dataframe.set_index("id") #transformei o indice na coluna id
 
     dataframe["estado"] = dataframe["localizacao"].str[-2:] #extraindo ultimos 2 caracteres da coluna localização e criando coluna estado
-    print(dataframe)
+    #print(dataframe)
    
     try:
         conn = sqlite3.connect('./bd/desafio_local.db')
@@ -117,7 +118,7 @@ def extracao_sugestao(lead, empreendimentos):
     empreendimentos_json = json.dumps(empreendimentos_lista, indent=4, ensure_ascii=False)
 
     for index, row  in lead.iterrows():
-        time.sleep(10)
+        time.sleep(5)
         pergunta = f""" 
                         Baseado nas informações do lead (possível cliente), sugira o melhor empreendimento, considerando os critérios, nessa ordem:
                         1. O orçamento do lead deve ser compatível com o preço do empreendimento.
@@ -184,3 +185,6 @@ print("Extraindo dados de empreendimentos e realizando consultas....")
 escrever_empreendimentos(df_empreendimentos)
 df_sugestao = extracao_sugestao(df_resp, df_empreendimentos)
 escrever_sugestao(df_sugestao)
+
+print("Gerando relatório....")
+subprocess.run(["streamlit", "run", "relatorio.py"])

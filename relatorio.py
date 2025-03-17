@@ -79,7 +79,7 @@ if not sugestao.empty:
 
 
 sentimento_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "sentimento"].values[0]
-print(sentimento_lead)
+#print(sentimento_lead)
 intencao_lead = df_leads.loc[df_leads["nome_lead"] == lead_selecionado, "intencao"].values[0]
 
 sentimento_valor = map_sentimento(sentimento_lead)
