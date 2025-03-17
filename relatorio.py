@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+import plotly.graph_objects as go
+
 import sqlite3
 
 largura = 0.30
@@ -13,6 +15,23 @@ def carregar_dados():
     df_empreendimentos = pd.read_sql("SELECT * FROM empreendimentos", conn)
     conn.close()
     return df_leads, df_sugestoes, df_empreendimentos
+
+def map_sentimento(sentimento):
+    sentimento_map = {
+        'empolgado': 100,
+        'neutro': 50,
+        'desconfiado': 30,
+        'insatisfeito': 10
+    }
+    return sentimento_map.get(sentimento, 50)
+
+def map_intencao(intencao):
+    intencao_map = {
+        'quente': 100,
+        'morno': 50,
+        'frio': 10
+    }
+    return intencao_map.get(intencao, 50)
 
 df_leads, df_sugestoes, df_empreendimentos = carregar_dados()
 
