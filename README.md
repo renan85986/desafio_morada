@@ -1,6 +1,29 @@
-# Desafio Morada.ai
+# Gerador de relatório de leads e empreendimentos
 
-## Requisitos
+# Introdução
+Em um contexto de mercado imobiliário, saber oferecer os melhores empreendimentos é fundamental para o corretor de imóveis. Pensando nisso, essa solução analisa conversas entre um lead (potencial cliente) e um assistente virtual, extrai os dados pertinentes dos 
+leads, e gera um relatório contendo os dados dos clientes e baseado nesses dados, sugestões individuais de empreendimentos baseados nas informações fornecidas. O relatório também conta com várias análises gráficas quanto ao perfil geral dos leads, tipos de imóveis e geolocalização, além de fazer uma análise do sentimento e intenção de compra do lead, fornecendo uma ferramenta completa para o corretor orientar seu atendimento ao cliente.
+
+** Observação: Para as instruções de como configurar a chave API do Gemini e executar o projeto, refira ao último item desse documento ("Configuração do ambiente")
+# 1 - Tecnologias utilizadas
+   - Python para processamento de dados
+   - Pandas para manipulação das tabelas de dados e dataframes
+   - Matplotlib e Seaborn para visualização dos dados
+   - Sqlite para gerenciamento de banco de dados
+   - API do google gemini, para gerar análises e extrair dados a partir das conversas simuladsa
+   - Streamlit para visualização de forma organizada e visual
+
+# 2 - Fluxo de Funcionamento
+   ### 1. Entrada de dados: 
+   conversas_leads.csv, contendo id e conteúdo da conversa
+   
+   empreendimentos.csv, contendo id, nome, descricao, localizacao, valor, quartos, banheiros, area, vagas, caracteristicas
+
+   ### 2. Processamento de dados:
+   Após ler os arquivos, as conversas são estruturadas em um dataframe e é requisitado ao Gemini para extrair informações de cada lead de cada conversa (nome, email, telefone, orçamento, localização, estado, tipo de imóvel, preferencias, dúvidas, sentimento em relação     ao serviço, e intenção de compra)
+
+
+# 1 - Configuração do ambiente 
 
 Antes de rodar o código, é necessário configurar a chave da API do Google no seu ambiente. Siga os passos abaixo para garantir que o código tenha acesso a ela:
 
@@ -80,10 +103,13 @@ Antes de rodar o código, é necessário configurar a chave da API do Google no 
    python main.py
    ```
 
-## Solução de Problemas
+### Solução de Problemas
 - **Erro de credenciais**: Se o código falhar ao acessar a chave, verifique se a variável de ambiente `GOOGLE_APPLICATION_CREDENTIALS` está configurada corretamente.
 - **Permissões insuficientes**: Certifique-se de que a conta de serviço tem acesso ao segredo no Secret Manager.
 - **Comando `gcloud` não encontrado**: Precisa instalar o google cloud SDK.
 
 Seguindo esses passos, sua chave de API estará corretamente configurada e acessível para uso no código.
+
+
+
 
