@@ -29,7 +29,7 @@ Antes de rodar o código, é necessário configurar a chave da API do Google no 
 
      **No Windows (CMD):**
      ```cmd
-     set GOOGLE_APPLICATION_CREDENTIALS="C:\caminho_para_credenciais\credencial.json"
+     set GOOGLE_APPLICATION_CREDENTIALS=C:\caminho_para_credenciais\credencial.json
      ```
      **No Linux/macOS:**
      ```bash
@@ -61,7 +61,17 @@ Antes de rodar o código, é necessário configurar a chave da API do Google no 
      ```bash
      pip install -r requirements.txt
      ```
-
+   - Caso dê erro, instale as bibliotecas manualmente
+     ```bash
+     pip install pandas
+     pip install google-generativeai
+     pip install google-cloud-secret-manager
+     pip install streamlit
+     pip install matplotlib
+     pip pinstall plotly
+     pip install numpy
+     ```
+     
 ### 8. Rodando o código
    Agora você pode rodar o código. Ele irá acessar automaticamente a chave da API do Google armazenada no Secret Manager.
    ```bash
