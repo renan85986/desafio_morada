@@ -8,7 +8,7 @@ import os
 import sqlite3
 import subprocess
 
-def acessar_segredo(secret_name):
+def acessar_segredo(secret_name): #aquisição da chave de API
     client = secretmanager.SecretManagerServiceClient()
 
     project_id = os.getenv("GCP_PROJECT_ID")
@@ -48,7 +48,7 @@ def extracao_info(conversa):
                 Para o campo intenção, analise a conversa e classifique o interesse e intenção de compra do lead como: 'frio', 'morno' ou 'quente', baseado nas respostas do lead
                 """
     resposta = model.generate_content(pergunta)
-    resposta = re.sub(r"^```json|```$", "", resposta.text.strip()).strip()
+    resposta = re.sub(r"^```json|```$", "", resposta.text.strip()).strip() #retirada do "lixo" que tava atrapalhando a leitura da resposta
 
     dados = json.loads(resposta) 
 
@@ -58,10 +58,10 @@ def processa_dados(conversas):
     dados_processados = [] 
 
     for index, row in conversas.iterrows():
-        conv = conversas.iloc[index,1]
+        conv = conversas.iloc[index,1] #separando as conversas 
         time.sleep(1)
 
-        resp = extracao_info(conv)
+        resp = extracao_info(conv) #chamando por cada conversa
 
         if resp:
             dados_processados.append(resp) 
@@ -114,7 +114,7 @@ def escrever_empreendimentos(dataframe):
 def extracao_sugestao(lead, empreendimentos):
     dados_processados = []
     empreendimentos_lista = empreendimentos.to_dict(orient="records") #transformando dataframe em lista, já que não consigo iterar sobre ele
-    empreendimentos_json = json.dumps(empreendimentos_lista, indent=4, ensure_ascii=False)
+    empreendimentos_json = json.dumps(empreendimentos_lista, indent=4, ensure_ascii=False) #mandando em json para facilitar leitura 
 
     for index, row  in lead.iterrows():
         time.sleep(5)
