@@ -23,10 +23,14 @@ def extracao_info(conversa):
                 - Tipo_imóvel (string)
                 - Preferencias (string)
                 - Duvidas_mencionadas (string)
+                - Sentimento (string)
+                - Intenção (string)
                 Conversa : {conversa}
                 Responda estritamente em formato JSON válido e lembre de retornar o orçamento em formato compatível com banco de dados
                 Retorne localização, preferencias e duvidas mencionadas como strings unicas, separando multiplicidades por virgula
                 Para o campo estado, inferir a partir do campo localização, e retornar apenas a sigla do estado
+                Para o campo sentimento, analise a conversa e classifique o sentimento do lead como: 'empolgado', 'neutro', 'desconfiado' ou 'insatisfeito'
+                Para o campo intenção, analise a conversa e classifique o interesse e intenção de compra do lead como: 'frio', 'morno' ou 'quente'
                 """
     resposta = model.generate_content(pergunta)
     resposta = re.sub(r"^```json|```$", "", resposta.text.strip()).strip()
@@ -61,8 +65,8 @@ def escrever_lead(dataframe):
 
     for _, row in dataframe.iterrows():
         cursor.execute("""
-            INSERT OR IGNORE INTO lead (nome_lead, email, telefone, orcamento, localizacao, estado, tipo_imovel, preferencias, duvidas) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT OR IGNORE INTO lead (nome_lead, email, telefone, orcamento, localizacao, estado, tipo_imovel, preferencias, duvidas, sentimento, intencao) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
         """, (
             row["Nome"], 
             row["Email"], 
@@ -72,7 +76,9 @@ def escrever_lead(dataframe):
             row["Estado"], 
             row["Tipo_imóvel"], 
             row["Preferencias"], 
-            row["Duvidas_mencionadas"]        
+            row["Duvidas_mencionadas"],
+            row["Sentimento"],
+            row["Intenção"]     
         ))
 
     conn.commit()

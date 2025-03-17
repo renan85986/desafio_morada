@@ -14,7 +14,9 @@ CREATE TABLE IF NOT EXISTS lead (
    estado TEXT,
    tipo_imovel TEXT,
    preferencias TEXT,
-   duvidas TEXT
+   duvidas TEXT,
+   sentimento TEXT,
+   intencao TEXT
 );
                      
 CREATE TABLE IF NOT EXISTS empreendimentos (
