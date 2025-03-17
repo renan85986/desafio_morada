@@ -1,4 +1,4 @@
-# Gerador de relatório de leads e empreendimentos
+# Gerador de relatório de leads e sugestões de empreendimentos
 
 # Introdução
 Em um contexto de mercado imobiliário, saber oferecer os melhores empreendimentos é fundamental para o corretor de imóveis. Pensando nisso, essa solução analisa conversas entre um lead (potencial cliente) e um assistente virtual, extrai os dados pertinentes dos 
