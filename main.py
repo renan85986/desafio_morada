@@ -12,7 +12,6 @@ def acessar_segredo(secret_name):
     client = secretmanager.SecretManagerServiceClient()
 
     project_id = os.getenv("GCP_PROJECT_ID")
-    print(project_id)
 
     if not project_id:
         print("Variável de ambiente do project id ainda não foi definida")
